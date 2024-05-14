@@ -1,6 +1,7 @@
 package candidatura;
 
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.Random;
 
 public class ProcessoSeletivo {
 
@@ -43,19 +44,55 @@ public class ProcessoSeletivo {
 			
 		}  // FIM DO WHILE
 		
-		imprimirCandidatosAprovados(candidatosAprovados);
+		imprimirCandidatosAprovados(candidatosAprovados, candidatosSelecionados);
 		
 	}
 	
-	static void imprimirCandidatosAprovados(String[] candidatosAprovados) {
+	static void imprimirCandidatosAprovados(String[] candidatosAprovados, int candidatosSelecionados) {
 		System.out.println("=============================");
 		System.out.println("Candidatos aprovados: ");
 		System.out.println("=============================");
-		for(int i = 0; i < candidatosAprovados.length; i++) {
+		for(int i = 0; i < candidatosSelecionados; i++) {
 			System.out.println(candidatosAprovados[i]);
+		}
+		
+		
+		for(int i =0 ; i < candidatosSelecionados; i++) {
+			fazerLigacoes(candidatosAprovados[i]);
 		}
 	}
 	
+	static void fazerLigacoes(String candidato) {
+		
+		int tentativas = 1;
+		boolean atendeu = false;
+		boolean continuarTentando = false;
+		
+		do {
+			
+			atendeu = atendeu();
+			continuarTentando = !atendeu;
+			
+			if(continuarTentando) {
+				tentativas++;
+			}else {
+				System.out.println("CONTATO REALIZADO COM SUCESSO!");
+			}
+			
+			
+		}while(continuarTentando && tentativas < 3);
+		
+		if(atendeu) {
+			System.out.printf("CONSEGUIMOS CONTATO COM O CANDIDATO %s na %d tentativa! \n", candidato, tentativas);
+		}else {
+			System.out.println("NÃO CONSEGUIMOS ENTRAR EM CONTATO COM O CANDIDATO " + candidato);
+		}
+		
+	}
+	
+	static boolean atendeu() {
+		return new Random().nextInt(3) == 1;
+	}
 	static double valorPretendido() {
 		return ThreadLocalRandom.current().nextDouble(1800,2200); 
 	}
